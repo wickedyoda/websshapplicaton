@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSH Manager</title>
+</head>
+<body>
+    <h1>SSH Manager</h1>
+    <form action="/execute_command" method="post">
+        <label for="host">Host:</label>
+        <input type="text" name="host" required><br>
+
+        <label for="username">Username:</label>
+        <input type="text" name="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" required><br>
+
+        <label for="command">Command:</label>
+        <input type="text" name="command" required><br>
+
+        <button type="submit">Execute Command</button>
+    </form>
+
+    {% if output %}
+        <h2>Command Output:</h2>
+        <pre>{{ output }}</pre>
+    {% endif %}
+
+
+<h2>Saved Configurations:</h2>
+<ul>
+    {% for config in configurations %}
+        <li>{{ config.host }} - {{ config.username }}</li>
+    {% endfor %}
+</ul>
+
+
+</body>
+</html>

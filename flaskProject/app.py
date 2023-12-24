@@ -1,7 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import paramiko
+from datetime import timedelta
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your_secret_key'
+app.permanent_session_lifetime = timedelta(minutes=2)  # Set session timeout to 2 minutes
 
 # Store configurations and command history in-memory
 configurations = [

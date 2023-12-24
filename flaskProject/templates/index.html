@@ -8,14 +8,6 @@
 <body>
     <h1>SSH Manager</h1>
     <form action="/execute_command" method="post">
-        <h2>Previous Commands:</h2>
-        <select name="previous_command">
-            {% for cmd in command_history %}
-                <option value="{{ cmd }}">{{ cmd }}</option>
-            {% endfor %}
-        </select>
-        <br>
-
         <label for="host">Host:</label>
         <input type="text" name="host" required><br>
 

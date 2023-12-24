@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session
 import paramiko
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -24,15 +24,15 @@ def execute_command():
     password = request.form.get('password')
     command = request.form.get('command')
 
-    # Add the new configuration to the list
-    configurations.append({"host": host, "username": username, "password": password})
-
     # Set up SSH client
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-    # Connect to the remote host
-    ssh.connect(host, username=username, password=password)
+    if 'logged_in' not in session or not session['logged_in']:
+        # Connect to the remote host only if not already logged in
+        ssh.connect(host, username=username, password=password)
+        session['logged_in'] = True
+        session['login_time'] = datetime.now()
 
     # Execute the command
     stdin, stdout, stderr = ssh.exec_command(command)

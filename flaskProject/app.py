@@ -46,6 +46,8 @@ def execute_command():
     # Close the SSH connection
     ssh.close()
 
+    session['previous_command'] = command  # Save the command in the session
+
     return render_template('index.html', output=output, configurations=configurations, command_history=command_history)
 
 if __name__ == '__main__':

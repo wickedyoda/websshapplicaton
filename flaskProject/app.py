@@ -10,40 +10,26 @@ configurations = [
 ]
 command_history = []
 
+# ... (previous imports and configurations) ...
+
 @app.route('/')
 def index():
     return render_template('index.html', configurations=configurations, command_history=command_history)
 
 @app.route('/execute_command', methods=['POST'])
 def execute_command():
-    host = request.form.get('host')
-    username = request.form.get('username')
-    password = request.form.get('password')
-    command = request.form.get('command')
+    # ... (previous code) ...
 
-    # Add the new configuration to the list
-    configurations.append({"host": host, "username": username, "password": password})
+    selected_command = request.form.get('previous_command')
+    if selected_command:
+        # If a previous command is selected, set it as the current command
+        command = selected_command
 
-    # Set up SSH client
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
-    # Connect to the remote host
-    ssh.connect(host, username=username, password=password)
-
-    # Execute the command
-    stdin, stdout, stderr = ssh.exec_command(command)
-
-    # Get the command output
-    output = stdout.read().decode('utf-8')
-
-    # Add the executed command to the command history
-    command_history.append(command)
-
-    # Close the SSH connection
-    ssh.close()
+    # ... (rest of the code) ...
 
     return render_template('index.html', output=output, configurations=configurations, command_history=command_history)
+
+# ... (rest of the code) ...
 
 if __name__ == '__main__':
     app.run(debug=True)
